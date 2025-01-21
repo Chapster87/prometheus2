@@ -1,0 +1,8 @@
+.community-rating {
+  @apply flex py-2.5 px-2 rounded;
+  background-color: #0d253f;
+
+  .rating-average {
+    @apply text-xl font-bold text-white pl-3 pr-1;
+  } 
+}

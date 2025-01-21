@@ -1,0 +1,20 @@
+@use "sass:meta";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {}
+
+  .using-mouse * {
+    outline: none !important;
+  }
+}
+
+@layer components {
+  @include meta.load-css('components/badges');
+  @include meta.load-css('components/rating');
+  @include meta.load-css('components/hero');
+}
