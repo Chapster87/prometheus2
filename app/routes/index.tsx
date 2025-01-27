@@ -1,7 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useQuery } from '@tanstack/react-query'
+import homeCss from '~/styles/homepage.scss?url'
+import { seo } from '~/utils/seo'
 
 import MediaHero from '~/components/media/MediaHero';
+import MediaRowTabs from '~/components/media/MediaRowTabs';
 
 import Spark from '../spark';
 
@@ -10,6 +13,17 @@ const session = {}; // Define session appropriately
 const spark = new Spark(session);
 
 export const Route = createFileRoute('/')({
+  head: () => ({
+    meta: [
+      ...seo({
+        title: 'Home | Prometheus 2.0',
+        description: `Prometheus 2.0 is a a study in the sue of the TMDB.org API to create a movie and TV show database.`,
+      })
+    ],
+    links: [
+      { rel: 'stylesheet', href: homeCss }
+    ]
+  }),
   component: Home,
 })
 
@@ -24,31 +38,48 @@ function Home() {
     queryFn: () => spark.getTrendingSeries()
   })
 
-  if (trendingMoviesStatus === 'pending' && trendingSeriesStatus === 'pending') { 
+  if (trendingMoviesStatus === 'pending' || trendingSeriesStatus === 'pending') { 
     return <p>Loading...</p>
   }
   if (trendingMoviesStatus === 'error' && trendingSeriesStatus === 'error') {
     return <p>Error :(</p>
   }
 
-  let randomMedia: HeroMedia | undefined;
+  let randomMedia;
+  let trendingGroups;
   if ((trendingMovies && trendingMovies.length) || (trendingSeries && trendingSeries.length)) {
     const allTrending = (trendingMovies || []).concat(trendingSeries || []);
     const random = Math.floor(Math.random() * allTrending.length);
     randomMedia = allTrending[random];
-    console.log('randomMedia', randomMedia);
+
+    trendingGroups = [
+      {
+        id: 'trendingSeries',
+        title: 'Trending Series',
+        mediaData: trendingSeries || []
+      },
+      {
+        id: 'trendingMovies',
+        title: 'Trending Movies',
+        mediaData: trendingMovies || []
+      }
+    ];
   }
 
   return (
     <div className='page-home'>
-      <MediaHero heroMedia={randomMedia} />
+      {randomMedia &&
+        <MediaHero heroMedia={randomMedia} />
+      }
+      {trendingGroups && 
+        <div className='container-fluid -mt-20'>
+          <div className='row'>
+            <div className='col-12'>
+              <MediaRowTabs tabGroups={trendingGroups} />
+            </div>
+          </div>
+        </div>
+      }
     </div>
   )
 }
-
-type HeroMedia = {
-  // Define the properties of HeroMedia based on your requirements
-  id: number;
-  title: string;
-  backdropPath: string;
-};

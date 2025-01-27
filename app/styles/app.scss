@@ -11,10 +11,15 @@
   .using-mouse * {
     outline: none !important;
   }
+
+  .container-fluid {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin: 0 auto;
+  }
 }
 
 @layer components {
-  @include meta.load-css('components/badges');
-  @include meta.load-css('components/rating');
-  @include meta.load-css('components/hero');
+
 }

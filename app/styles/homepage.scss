@@ -1,0 +1,7 @@
+@use "sass:meta";
+
+@include meta.load-css('components/tabs');
+@include meta.load-css('components/cards');
+@include meta.load-css('components/badges');
+@include meta.load-css('components/rating');
+@include meta.load-css('components/hero');

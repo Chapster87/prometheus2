@@ -1,11 +1,10 @@
 .media-hero {
-  @apply block;
-  aspect-ratio: 16/9;
+  aspect-ratio: 21/9;
+  @apply relative;
 
-  .hero-inner {
+  .hero-image {
     aspect-ratio: 21/9;
-    @apply grid w-full;
-    place-items: center;
+    @apply bg-cover bg-center absolute top-0 left-0 w-full;
   } 
 
   .hero-overlay {
@@ -13,6 +12,6 @@
   }
 
   .hero-content {
-    @apply text-primary-content bg-black bg-opacity-60 absolute left-0 m-4 rounded;
+    @apply text-primary-content bg-base-300/70 absolute left-0 m-4 rounded;
   }
 }

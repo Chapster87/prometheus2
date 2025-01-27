@@ -3,6 +3,10 @@ module.exports = {
   content: ['./app/**/*.{js,ts,jsx,tsx}'],
   safelist: [{ pattern: /^col-/ }],
   theme: {
+    container: {
+      center: true,
+      padding: "1rem",
+    },
     extend: {
       fontFamily: {
         sans: [

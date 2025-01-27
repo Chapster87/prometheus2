@@ -29,8 +29,8 @@ export const Route = createRootRouteWithContext<{
       },
       ...seo({
         title:
-          'TanStack Start | Type-Safe, Client-First, Full-Stack React Framework',
-        description: `TanStack Start is a type-safe, client-first, full-stack React framework. `,
+          'Prometheus 2.0',
+        description: `Prometheus 2.0 is a a study in the sue of the TMDB.org API to create a movie and TV show database.`,
       }),
     ],
     links: [
@@ -92,6 +92,22 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             activeOptions={{ exact: true }}
           >
             Home
+          </Link>{' '}
+          <Link
+            to="/movies"
+            activeProps={{
+              className: 'font-bold',
+            }}
+          >
+            Movies
+          </Link>{' '}
+          <Link
+            to="/series"
+            activeProps={{
+              className: 'font-bold',
+            }}
+          >
+            TV Series
           </Link>{' '}
           <Link
             to="/posts"

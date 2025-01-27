@@ -1,0 +1,27 @@
+@use "sass:meta";
+@use 'sass:math';
+@use 'sass:list';
+
+/**
+ *  @function strip-unit
+ *  Remove the unit of a length
+ *  @param {Number} $number - Number to remove unit from
+ *  @return {Number} - Unitless number
+ **/
+@function strip-unit($number) {
+  @if meta.type-of($number) == "number" and not math.is-unitless($number) {
+      @return math.div($number, ($number * 0 + 1));
+  }
+
+  @return $number;
+}
+
+@function rem($pxValue...) {
+  $remval: ();
+
+  @each $val in $pxValue {
+      $remval: list.append($remval, math.div(strip-unit($val), strip-unit(16px)) + rem);
+  }
+
+  @return $remval;
+}

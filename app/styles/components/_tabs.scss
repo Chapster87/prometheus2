@@ -1,0 +1,22 @@
+@use "../utilities/utils" as *;
+
+.tabs {
+  @apply relative;
+  z-index: 1;
+
+  .tab {
+    @apply bg-none bg-base-100/60 h-auto font-bold text-base text-primary-content py-3 px-4 uppercase rounded-t border border-black whitespace-nowrap;
+
+    &.tab-active{
+      @apply bg-base-300/90 text-primary border-0;
+    }
+  }
+
+  .tab-content {
+    @apply hidden bg-base-300/90 text-primary-content p-4 border-0 rounded-b rounded-tr overflow-x-auto;
+
+    &.tab-content-active {
+      @apply flex;
+    }
+  }
+}
