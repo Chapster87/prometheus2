@@ -4,9 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@include meta.load-css('components/footer');
+
 @layer base {
-  html,
-  body {}
+  body {
+    @apply relative mb-10;
+  }
 
   .using-mouse * {
     outline: none !important;

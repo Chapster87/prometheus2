@@ -10,6 +10,7 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Meta, Scripts } from '@tanstack/start'
 import * as React from 'react'
 import type { QueryClient } from '@tanstack/react-query'
+import { Footer } from '~/components/common/Footer'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 import appCss from '~/styles/app.scss?url'
@@ -102,12 +103,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             Movies
           </Link>{' '}
           <Link
-            to="/series"
+            to="/shows"
             activeProps={{
               className: 'font-bold',
             }}
           >
-            TV Series
+            Shows
           </Link>{' '}
           <Link
             to="/posts"
@@ -153,6 +154,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         </div>
         <hr />
         {children}
+        <Footer />
         <ScrollRestoration />
         <TanStackRouterDevtools position="bottom-right" />
         <ReactQueryDevtools buttonPosition="bottom-left" />
