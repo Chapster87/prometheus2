@@ -17,7 +17,7 @@ export const Route = createFileRoute('/')({
     meta: [
       ...seo({
         title: 'Home | Prometheus 2.0',
-        description: `Prometheus 2.0 is a a study in the sue of the TMDB.org API to create a movie and TV show database.`,
+        description: `Prometheus 2.0 is a study in the use of the TMDB.org API to create a movie and TV show database.`,
       })
     ],
     links: [
@@ -33,30 +33,30 @@ function Home() {
     queryFn: () => spark.getTrendingMovies()
   })
 
-  const { data: trendingSeries, status: trendingSeriesStatus } = useQuery({
-    queryKey: ['trendingSeries'],
-    queryFn: () => spark.getTrendingSeries()
+  const { data: trendingShow, status: trendingShowStatus } = useQuery({
+    queryKey: ['trendingShow'],
+    queryFn: () => spark.getTrendingShow()
   })
 
-  if (trendingMoviesStatus === 'pending' || trendingSeriesStatus === 'pending') { 
+  if (trendingMoviesStatus === 'pending' || trendingShowStatus === 'pending') { 
     return <p>Loading...</p>
   }
-  if (trendingMoviesStatus === 'error' && trendingSeriesStatus === 'error') {
+  if (trendingMoviesStatus === 'error' && trendingShowStatus === 'error') {
     return <p>Error :(</p>
   }
 
   let randomMedia;
   let trendingGroups;
-  if ((trendingMovies && trendingMovies.length) || (trendingSeries && trendingSeries.length)) {
-    const allTrending = (trendingMovies || []).concat(trendingSeries || []);
+  if ((trendingMovies && trendingMovies.length) || (trendingShow && trendingShow.length)) {
+    const allTrending = (trendingMovies || []).concat(trendingShow || []);
     const random = Math.floor(Math.random() * allTrending.length);
     randomMedia = allTrending[random];
 
     trendingGroups = [
       {
-        id: 'trendingSeries',
-        title: 'Trending Series',
-        mediaData: trendingSeries || []
+        id: 'trendingShow',
+        title: 'Trending Shows',
+        mediaData: trendingShow || []
       },
       {
         id: 'trendingMovies',

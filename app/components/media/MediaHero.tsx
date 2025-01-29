@@ -1,21 +1,11 @@
 import { useState } from 'react';
+import { Link } from '@tanstack/react-router'
 import tmdb from '~/assets/images/tmdb-short.svg';
 import { DynamicIcon } from 'lucide-react/dynamic';
 
-
-interface HeroMedia {
-  backdrop_path: string;
-  certification_rating: string;
-  media_type: string;
-  name: string;
-  title: string;
-  overview: string;
-  vote_average: number;
-}
-
 export default function MediaHero({ heroMedia }: { heroMedia: HeroMedia }) {
-  const { backdrop_path, certification_rating, media_type, name, title, overview, vote_average } = heroMedia;
-  const mediaType = media_type === 'movie' ? 'Movie' : 'Series';
+  const { backdrop_path, certification_rating, media_type, id, name, title, overview, vote_average } = heroMedia;
+  const [isShow, setIsShow] = useState(media_type && media_type !== 'movie');
 
   return (
     <div
@@ -29,7 +19,7 @@ export default function MediaHero({ heroMedia }: { heroMedia: HeroMedia }) {
       <div className="hero-content">
         <div className="max-w-2xl">
           <div className="flex items-center mb-3">
-            <DynamicIcon name="trending-up" className="text-primary" size={24} /><p className="ml-2 uppercase text-lg font-bold">Trending {mediaType}</p>
+            <DynamicIcon name="trending-up" className="text-primary" size={24} /><p className="ml-2 uppercase text-lg font-bold">Trending {isShow ? 'Show' : 'Movie'}</p>
           </div>
           <h1 className="mb-5 text-5xl font-bold">{media_type === 'movie' ? title : name}</h1>
           {(certification_rating || (vote_average && vote_average > 0)) && (
@@ -49,12 +39,28 @@ export default function MediaHero({ heroMedia }: { heroMedia: HeroMedia }) {
             </div>
           )}
           <p className="mb-5">{overview}</p>
-          <button className="btn btn-primary text-base">
+          <Link
+            to={isShow ? `/shows/$mediaId` : `/movies/$mediaId`}
+            params={{
+              mediaId: id,
+            }}
+            className="btn btn-primary text-base"
+          >
             <DynamicIcon name="library" size={24} />
-            <span className="ml-1">{mediaType} Info</span>
-          </button>
+            <span className="ml-1">{isShow ? 'Show Info' : 'Movie Info'}</span>
+          </Link>
         </div>
       </div>
     </div>
   );
+}
+
+interface HeroMedia {
+  backdrop_path: string;
+  certification_rating: string;
+  media_type: string;
+  name: string;
+  title: string;
+  overview: string;
+  vote_average: number;
 }

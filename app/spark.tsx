@@ -1,60 +1,5 @@
 import { ReactNode } from 'react';
 
-type config = {
-  tmdbApiKey?: string;
-  tmdbApiReadAccessToken?: string;
-  xcUrl?: string;
-  xcAuth?: {
-    username: string;
-    password: string;
-  };
-};
-
-type session = {
-  user?: {
-    user_metadata: {
-      tmdbApiKey: string;
-      tmdbApiReadAccessToken: string;
-      xcUrl: string;
-      xcUsername: string;
-      xcPassword: string;
-    };
-  };
-};
-
-type TmdbParams = {
-  append_to_response?: string;
-  language?: string;
-  include_adult?: boolean;
-  include_video?: boolean;
-  page?: number;
-  sort_by?: string;
-  with_genres?: string;
-  query?: string;
-  first_air_date_year?: number;
-};
-
-type TmdbResponse = {
-  title: ReactNode;
-  results: any[];
-  genres?: any[];
-  content_ratings?: {
-    results: {
-      iso_3166_1: string;
-      rating: string | null;
-    }[];
-  };
-  release_dates?: {
-    results: {
-      iso_3166_1: string;
-      release_dates: {
-        certification: string;
-      }[];
-    }[];
-  };
-  media_type?: string;
-};
-
 export default class Spark {
   config!: config;
   /**
@@ -96,7 +41,7 @@ export default class Spark {
   async getTmdb(
     section: string,
     content: string,
-    path_params: string | null,
+    path_params: TmdbParams | null,
     query_params: TmdbParams | null
   ): Promise<TmdbResponse | undefined> {
     if (this.config && this.config.tmdbApiReadAccessToken) {
@@ -112,13 +57,18 @@ export default class Spark {
       let fetchUrl = `${tmdbBaseUrl}/${section}/${content}`;
 
       if (path_params) {
-        fetchUrl += `/${path_params}`;
+        const pathstring = Object.entries(path_params)
+          .map(([key, value]) => `${key}/${value}`)
+          .join('/');
+        fetchUrl += `/${pathstring}`;
       }
 
       if (query_params) {
         const querystring = new URLSearchParams(query_params as any).toString();
         fetchUrl = fetchUrl + `?${querystring}`;
       }
+
+      // console.log('fetchUrl:', fetchUrl);
 
       const res = await fetch(fetchUrl, options);
       if (!res.ok) {
@@ -134,11 +84,30 @@ export default class Spark {
   }
 
   /**
+     * Fetch Movie Details from TMDB
+     *
+     */
+  async getTmdbMovie(id: number): Promise<TmdbResponse | undefined> {
+    const query_params: TmdbParams = {
+      append_to_response: 'release_dates,watch/providers',
+      language: 'en-US'
+    };
+
+    let movieDetails = await this.getTmdb('movie', id.toString(), null, query_params);
+    if (movieDetails) {
+      movieDetails.media_type = 'movie';
+      movieDetails = await this.getTmdbCertificationRating(movieDetails as TmdbResponse & { media_type: string });
+    }
+
+    return movieDetails;
+  }
+
+  /**
    * Fetch Movie Details for an array of ids from TMDB
    *
    */
   async getTmdbMoviesGroup(movieIdArray: number[]): Promise<TmdbResponse[] | undefined> {
-    const params: TmdbParams = {
+    const query_params: TmdbParams = {
       append_to_response: "release_dates,watch/providers",
       language: "en-US",
     };
@@ -146,7 +115,7 @@ export default class Spark {
     const movieDetails: TmdbResponse[] = [];
 
     for (let i in movieIdArray) {
-      let movie = await this.getTmdb("movie", movieIdArray[i].toString(), null, params);
+      let movie = await this.getTmdb("movie", movieIdArray[i].toString(), null, query_params);
 
       if (movie) {
         movie = { ...movie, media_type: "movie" };
@@ -163,30 +132,146 @@ export default class Spark {
   }
 
   /**
+     * Fetch Movie Genres from TMDB
+     *
+     */
+  async getTmdbMovieGenres() {
+    const query_params = {
+      language:'en-US'
+    };
+
+    const movieGenres = await this.getTmdb('genre', 'movie/list', null, query_params);
+
+    return movieGenres ? movieGenres.genres : undefined;
+  }
+
+  /**
+     * Fetch Movies from specific genre(s) id
+     *
+     */
+  async getTmdbMoviesByGenres(ids: string): Promise<TmdbResponse | undefined> {
+    const query_params: TmdbParams = {
+      include_adult: false,
+      include_video: false,
+      language: 'en-US',
+      page: 1,
+      sort_by: 'popularity.desc',
+      with_genres: ids,
+      with_original_language: 'en'
+    };
+
+    const moviesByGenres = await this.getTmdb('discover', 'movie', null, query_params);
+
+    return moviesByGenres;
+  }
+
+  /**
    * Fetch Movie Details for an array of ids from TMDB
    *
    */
-  async getTmdbSeriesGroup(seriesIdArray: number[]): Promise<TmdbResponse[] | undefined> {
-    const params: TmdbParams = {
-        append_to_response: 'content_ratings,watch/providers',
-        language: 'en-US'
+  async getTmdbShowGroup(showIdArray: number[]): Promise<TmdbResponse[] | undefined> {
+    const query_params: TmdbParams = {
+      append_to_response: 'content_ratings,watch/providers',
+      language: 'en-US'
     };
 
-    const seriesDetails: TmdbResponse[] = [];
+    const showDetails: TmdbResponse[] = [];
 
-    for (let i in seriesIdArray) {
-        let series = await this.getTmdb('tv', seriesIdArray[i].toString(), null, params);
+    for (let i in showIdArray) {
+      let show = await this.getTmdb('tv', showIdArray[i].toString(), null, query_params);
 
-        if (series) {
-            series.media_type = 'tv';
-            series = await this.getTmdbCertificationRating(series as TmdbResponse & { media_type: string });
-            seriesDetails.push(series);
-        }
+      if (show) {
+          show.media_type = 'tv';
+          show = await this.getTmdbCertificationRating(show as TmdbResponse & { media_type: string });
+          showDetails.push(show);
+      }
     }
 
-    if (seriesDetails.length > 0) {
-        return seriesDetails;
+    if (showDetails.length > 0) {
+        return showDetails;
     }
+  }
+
+  /**
+     * Fetch TV Show Details from TMDB
+     *
+     */
+  async getTmdbShowSeasonDetails(id: number, season: number){
+    const path_params: TmdbParams = {
+      season: season.toString()
+    };
+    const query_params: TmdbParams = {
+      language: 'en-US'
+    };
+
+    let showDetails = await this.getTmdb('tv', id.toString(), path_params, query_params);
+
+    return showDetails;
+  }
+
+  /**
+     * Fetch TV Show Details from TMDB
+     *
+     */
+  async getTmdbShow(id: number): Promise<TmdbResponse | undefined> {
+    const query_params: TmdbParams = {
+      append_to_response: 'content_ratings,watch/providers',
+      language: 'en-US'
+    };
+
+    let showDetails = await this.getTmdb('tv', id.toString(), null, query_params);
+    if (showDetails) {
+      showDetails.media_type = 'show';
+
+      // Add Certification Rating
+      showDetails = await this.getTmdbCertificationRating(showDetails as TmdbResponse & { media_type: string });
+
+      // Add episode data to seasons
+      if (showDetails.seasons && showDetails.seasons.length) {
+        showDetails.seasons = await Promise.all(
+          showDetails.seasons.map(async (season: { season_number: number }) => {
+            const seasonDetails = await this.getTmdbShowSeasonDetails(id, season.season_number);
+            return { ...season, episodes: seasonDetails?.episodes };
+          })
+        );
+      }
+    }
+
+    return showDetails;
+  }
+
+  /**
+     * Fetch Show Genres from TMDB
+     *
+     */
+  async getTmdbShowGenres() {
+    const query_params = {
+      language:'en-US'
+    };
+
+    const showGenres = await this.getTmdb('genre', 'tv/list', null, query_params);
+
+    return showGenres ? showGenres.genres : undefined;
+  }
+
+  /**
+     * Fetch Show from specific genre(s) id
+     *
+     */
+  async getTmdbShowByGenres(ids: string): Promise<TmdbResponse | undefined> {
+    const query_params: TmdbParams = {
+      include_adult: false,
+      include_video: false,
+      language: 'en-US',
+      page: 1,
+      sort_by: 'popularity.desc',
+      with_genres: ids,
+      with_original_language: 'en'
+    };
+
+    const showByGenres = await this.getTmdb('discover', 'tv', null, query_params);
+
+    return showByGenres;
   }
 
   /**
@@ -195,16 +280,11 @@ export default class Spark {
    */
   async getTrendingMovies() {
     if (this.config) {
-      const params = {
+      const query_params = {
         language: "en-US",
       };
 
-      const trendingMovies = await this.getTmdb(
-        "trending",
-        "movie",
-        "week",
-        params
-      );
+      const trendingMovies = await this.getTmdb("trending", "movie/week", null, query_params);
 
       if (trendingMovies && trendingMovies.results.length > 0) {
         const trendingMoviesIDs: number[] = [];
@@ -226,36 +306,36 @@ export default class Spark {
   }
 
   /**
-   * Fetch Trending Series from TMDB and attach stream id to link to Series Detail
+   * Fetch Trending Show from TMDB and attach stream id to link to Show Detail
    *
    */
-  async getTrendingSeries() {
-    const params = {
-        language:'en-US'
+  async getTrendingShow() {
+    const query_params = {
+      language:'en-US'
     };
 
-    const trendingSeries = await this.getTmdb('trending', 'tv', 'week', params);
+    const trendingShow = await this.getTmdb('trending', 'tv/week', null, query_params);
 
-    if(trendingSeries && trendingSeries.results) {
-        const trendingSeriesIDs: number[] = [];
-        let updatedTrendingSeries = null;
+    if(trendingShow && trendingShow.results) {
+      const trendingShowIDs: number[] = [];
+      let updatedTrendingShow = null;
 
-        trendingSeries.results.map(series => {
-            trendingSeriesIDs.push(series.id);
-        });
+      trendingShow.results.map(show => {
+          trendingShowIDs.push(show.id);
+      });
 
-        if(trendingSeriesIDs.length) {
-            updatedTrendingSeries = await this.getTmdbSeriesGroup(trendingSeriesIDs);
-        }
+      if(trendingShowIDs.length) {
+          updatedTrendingShow = await this.getTmdbShowGroup(trendingShowIDs);
+      }
 
-        return updatedTrendingSeries;
+      return updatedTrendingShow;
     }
   }
 
   /**
    * GET Media Certification Rating
    *
-   * @param {Object} seriesList
+   * @param {Object} showList
    */
   async getTmdbCertificationRating(media: TmdbResponse & { media_type: string }): Promise<TmdbResponse & { certification_rating: string | null }> {
     let updatedMedia = { ...media, certification_rating: null as string | null };
@@ -275,3 +355,62 @@ export default class Spark {
     return updatedMedia;
   }
 }
+
+type config = {
+  tmdbApiKey?: string;
+  tmdbApiReadAccessToken?: string;
+  xcUrl?: string;
+  xcAuth?: {
+    username: string;
+    password: string;
+  };
+};
+
+type session = {
+  user?: {
+    user_metadata: {
+      tmdbApiKey: string;
+      tmdbApiReadAccessToken: string;
+      xcUrl: string;
+      xcUsername: string;
+      xcPassword: string;
+    };
+  };
+};
+
+type TmdbParams = {
+  append_to_response?: string;
+  language?: string;
+  include_adult?: boolean;
+  include_video?: boolean;
+  page?: number;
+  sort_by?: string;
+  with_genres?: string;
+  query?: string;
+  first_air_date_year?: number;
+  season?: string;
+  with_original_language?: string;
+};
+
+type TmdbResponse = {
+  title: ReactNode;
+  results: any[];
+  genres?: any[];
+  content_ratings?: {
+    results: {
+      iso_3166_1: string;
+      rating: string | null;
+    }[];
+  };
+  release_dates?: {
+    results: {
+      iso_3166_1: string;
+      release_dates: {
+        certification: string;
+      }[];
+    }[];
+  };
+  media_type?: string;
+  seasons?: { season_number: number, episodes?: any[] }[];
+  episodes?: any[];
+};
