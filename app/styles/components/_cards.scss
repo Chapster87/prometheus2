@@ -2,20 +2,6 @@
 @use "../utilities/breakpoints" as *;
 
 .media-card {
-  width: calc((100vw - #{rem(80)}) / 2);
-
-  @include media-breakpoint-up(sm) {
-    width: calc((100vw - #{rem(112)}) / 4);
-  }
-
-  @include media-breakpoint-up(lg) {
-    width: calc((100vw - #{rem(128)}) / 5);
-  }
-
-  @include media-breakpoint-up(xl) {
-    width: calc((100vw - #{rem(192)}) / 8);
-  }
-
   .card-image {
     aspect-ratio: 2 / 3;
   }
@@ -30,4 +16,20 @@
     line-height: rem(20px);
     max-height: rem(84px);
   }
+}
+
+.cat-landing .media-card {
+  width: calc((100% - #{rem(64)}) / 5);
+
+  // @include media-breakpoint-up(sm) {
+  //   width: calc((100vw - #{rem(112)}) / 4);
+  // }
+
+  // @include media-breakpoint-up(lg) {
+  //   width: calc((100vw - #{rem(128)}) / 5);
+  // }
+
+  // @include media-breakpoint-up(xl) {
+  //   width: calc((100vw - #{rem(192)}) / 8);
+  // }
 }
