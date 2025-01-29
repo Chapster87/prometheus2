@@ -1,0 +1,30 @@
+@use "sass:meta";
+
+@use "./utilities/utils" as *;
+@use "./utilities/breakpoints" as *;
+
+@include meta.load-css('components/tabs');
+@include meta.load-css('components/badges');
+@include meta.load-css('components/rating');
+
+.media-detail {
+  .bg-image {
+    aspect-ratio: 16/9;
+    z-index: -1;
+  }
+
+  .media-image {
+    aspect-ratio: 2/3;
+  }
+
+  .details-row {
+    .details-item:not(:last-child) {
+      &:after {
+        content: '•';
+        font-size: rem(20px);
+        display: inline-block;
+        margin: rem(0, 14px)
+      }
+    }
+  }
+}

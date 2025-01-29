@@ -18,9 +18,13 @@ import { Route as DeferredImport } from './routes/deferred'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as UsersIndexImport } from './routes/users.index'
+import { Route as ShowsIndexImport } from './routes/shows/index'
 import { Route as PostsIndexImport } from './routes/posts.index'
+import { Route as MoviesIndexImport } from './routes/movies/index'
 import { Route as UsersUserIdImport } from './routes/users.$userId'
+import { Route as ShowsMediaIdImport } from './routes/shows/$mediaId'
 import { Route as PostsPostIdImport } from './routes/posts.$postId'
+import { Route as MoviesMediaIdImport } from './routes/movies/$mediaId'
 import { Route as LayoutLayout2Import } from './routes/_layout/_layout-2'
 import { Route as PostsPostIdDeepImport } from './routes/posts_.$postId.deep'
 import { Route as LayoutLayout2LayoutBImport } from './routes/_layout/_layout-2/layout-b'
@@ -69,10 +73,22 @@ const UsersIndexRoute = UsersIndexImport.update({
   getParentRoute: () => UsersRoute,
 } as any)
 
+const ShowsIndexRoute = ShowsIndexImport.update({
+  id: '/shows/',
+  path: '/shows/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PostsIndexRoute = PostsIndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => PostsRoute,
+} as any)
+
+const MoviesIndexRoute = MoviesIndexImport.update({
+  id: '/movies/',
+  path: '/movies/',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const UsersUserIdRoute = UsersUserIdImport.update({
@@ -81,10 +97,22 @@ const UsersUserIdRoute = UsersUserIdImport.update({
   getParentRoute: () => UsersRoute,
 } as any)
 
+const ShowsMediaIdRoute = ShowsMediaIdImport.update({
+  id: '/shows/$mediaId',
+  path: '/shows/$mediaId',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PostsPostIdRoute = PostsPostIdImport.update({
   id: '/$postId',
   path: '/$postId',
   getParentRoute: () => PostsRoute,
+} as any)
+
+const MoviesMediaIdRoute = MoviesMediaIdImport.update({
+  id: '/movies/$mediaId',
+  path: '/movies/$mediaId',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const LayoutLayout2Route = LayoutLayout2Import.update({
@@ -163,12 +191,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutLayout2Import
       parentRoute: typeof LayoutImport
     }
+    '/movies/$mediaId': {
+      id: '/movies/$mediaId'
+      path: '/movies/$mediaId'
+      fullPath: '/movies/$mediaId'
+      preLoaderRoute: typeof MoviesMediaIdImport
+      parentRoute: typeof rootRoute
+    }
     '/posts/$postId': {
       id: '/posts/$postId'
       path: '/$postId'
       fullPath: '/posts/$postId'
       preLoaderRoute: typeof PostsPostIdImport
       parentRoute: typeof PostsImport
+    }
+    '/shows/$mediaId': {
+      id: '/shows/$mediaId'
+      path: '/shows/$mediaId'
+      fullPath: '/shows/$mediaId'
+      preLoaderRoute: typeof ShowsMediaIdImport
+      parentRoute: typeof rootRoute
     }
     '/users/$userId': {
       id: '/users/$userId'
@@ -177,12 +219,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersUserIdImport
       parentRoute: typeof UsersImport
     }
+    '/movies/': {
+      id: '/movies/'
+      path: '/movies'
+      fullPath: '/movies'
+      preLoaderRoute: typeof MoviesIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/posts/': {
       id: '/posts/'
       path: '/'
       fullPath: '/posts/'
       preLoaderRoute: typeof PostsIndexImport
       parentRoute: typeof PostsImport
+    }
+    '/shows/': {
+      id: '/shows/'
+      path: '/shows'
+      fullPath: '/shows'
+      preLoaderRoute: typeof ShowsIndexImport
+      parentRoute: typeof rootRoute
     }
     '/users/': {
       id: '/users/'
@@ -273,9 +329,13 @@ export interface FileRoutesByFullPath {
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
   '/users': typeof UsersRouteWithChildren
+  '/movies/$mediaId': typeof MoviesMediaIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/shows/$mediaId': typeof ShowsMediaIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/movies': typeof MoviesIndexRoute
   '/posts/': typeof PostsIndexRoute
+  '/shows': typeof ShowsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/layout-a': typeof LayoutLayout2LayoutARoute
   '/layout-b': typeof LayoutLayout2LayoutBRoute
@@ -287,9 +347,13 @@ export interface FileRoutesByTo {
   '': typeof LayoutLayout2RouteWithChildren
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
+  '/movies/$mediaId': typeof MoviesMediaIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/shows/$mediaId': typeof ShowsMediaIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/movies': typeof MoviesIndexRoute
   '/posts': typeof PostsIndexRoute
+  '/shows': typeof ShowsIndexRoute
   '/users': typeof UsersIndexRoute
   '/layout-a': typeof LayoutLayout2LayoutARoute
   '/layout-b': typeof LayoutLayout2LayoutBRoute
@@ -305,9 +369,13 @@ export interface FileRoutesById {
   '/redirect': typeof RedirectRoute
   '/users': typeof UsersRouteWithChildren
   '/_layout/_layout-2': typeof LayoutLayout2RouteWithChildren
+  '/movies/$mediaId': typeof MoviesMediaIdRoute
   '/posts/$postId': typeof PostsPostIdRoute
+  '/shows/$mediaId': typeof ShowsMediaIdRoute
   '/users/$userId': typeof UsersUserIdRoute
+  '/movies/': typeof MoviesIndexRoute
   '/posts/': typeof PostsIndexRoute
+  '/shows/': typeof ShowsIndexRoute
   '/users/': typeof UsersIndexRoute
   '/_layout/_layout-2/layout-a': typeof LayoutLayout2LayoutARoute
   '/_layout/_layout-2/layout-b': typeof LayoutLayout2LayoutBRoute
@@ -323,9 +391,13 @@ export interface FileRouteTypes {
     | '/posts'
     | '/redirect'
     | '/users'
+    | '/movies/$mediaId'
     | '/posts/$postId'
+    | '/shows/$mediaId'
     | '/users/$userId'
+    | '/movies'
     | '/posts/'
+    | '/shows'
     | '/users/'
     | '/layout-a'
     | '/layout-b'
@@ -336,9 +408,13 @@ export interface FileRouteTypes {
     | ''
     | '/deferred'
     | '/redirect'
+    | '/movies/$mediaId'
     | '/posts/$postId'
+    | '/shows/$mediaId'
     | '/users/$userId'
+    | '/movies'
     | '/posts'
+    | '/shows'
     | '/users'
     | '/layout-a'
     | '/layout-b'
@@ -352,9 +428,13 @@ export interface FileRouteTypes {
     | '/redirect'
     | '/users'
     | '/_layout/_layout-2'
+    | '/movies/$mediaId'
     | '/posts/$postId'
+    | '/shows/$mediaId'
     | '/users/$userId'
+    | '/movies/'
     | '/posts/'
+    | '/shows/'
     | '/users/'
     | '/_layout/_layout-2/layout-a'
     | '/_layout/_layout-2/layout-b'
@@ -369,6 +449,10 @@ export interface RootRouteChildren {
   PostsRoute: typeof PostsRouteWithChildren
   RedirectRoute: typeof RedirectRoute
   UsersRoute: typeof UsersRouteWithChildren
+  MoviesMediaIdRoute: typeof MoviesMediaIdRoute
+  ShowsMediaIdRoute: typeof ShowsMediaIdRoute
+  MoviesIndexRoute: typeof MoviesIndexRoute
+  ShowsIndexRoute: typeof ShowsIndexRoute
   PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
 }
 
@@ -379,6 +463,10 @@ const rootRouteChildren: RootRouteChildren = {
   PostsRoute: PostsRouteWithChildren,
   RedirectRoute: RedirectRoute,
   UsersRoute: UsersRouteWithChildren,
+  MoviesMediaIdRoute: MoviesMediaIdRoute,
+  ShowsMediaIdRoute: ShowsMediaIdRoute,
+  MoviesIndexRoute: MoviesIndexRoute,
+  ShowsIndexRoute: ShowsIndexRoute,
   PostsPostIdDeepRoute: PostsPostIdDeepRoute,
 }
 
@@ -398,6 +486,10 @@ export const routeTree = rootRoute
         "/posts",
         "/redirect",
         "/users",
+        "/movies/$mediaId",
+        "/shows/$mediaId",
+        "/movies/",
+        "/shows/",
         "/posts_/$postId/deep"
       ]
     },
@@ -438,17 +530,29 @@ export const routeTree = rootRoute
         "/_layout/_layout-2/layout-b"
       ]
     },
+    "/movies/$mediaId": {
+      "filePath": "movies/$mediaId.tsx"
+    },
     "/posts/$postId": {
       "filePath": "posts.$postId.tsx",
       "parent": "/posts"
+    },
+    "/shows/$mediaId": {
+      "filePath": "shows/$mediaId.tsx"
     },
     "/users/$userId": {
       "filePath": "users.$userId.tsx",
       "parent": "/users"
     },
+    "/movies/": {
+      "filePath": "movies/index.tsx"
+    },
     "/posts/": {
       "filePath": "posts.index.tsx",
       "parent": "/posts"
+    },
+    "/shows/": {
+      "filePath": "shows/index.tsx"
     },
     "/users/": {
       "filePath": "users.index.tsx",
