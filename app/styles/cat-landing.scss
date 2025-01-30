@@ -1,3 +1,4 @@
 @use "sass:meta";
 
 @include meta.load-css('components/cards');
+@include meta.load-css('components/pagination');

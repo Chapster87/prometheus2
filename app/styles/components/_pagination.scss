@@ -1,0 +1,31 @@
+@use "../utilities/utils" as *;
+@use "../utilities/breakpoints" as *;
+
+.pagination {
+  @apply shadow-xl;
+  gap: 4px;
+
+  .btn {
+    &[disabled]{
+      --tw-bg-opacity: 0.4;
+      --tw-text-opacity: 0.6;
+
+      .lucide {
+        @apply text-base-content opacity-60;
+      }
+    }
+
+    &.page-current {
+      pointer-events: none;
+      @apply bg-neutral-content text-neutral;
+    }
+
+    &:hover {
+      @apply bg-primary border-primary;
+
+      .lucide {
+        @apply text-neutral;
+      }
+    }
+  }
+}

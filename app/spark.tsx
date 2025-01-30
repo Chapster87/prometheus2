@@ -149,12 +149,12 @@ export default class Spark {
      * Fetch Movies from specific genre(s) id
      *
      */
-  async getTmdbMoviesByGenres(ids: string): Promise<TmdbResponse | undefined> {
+  async getTmdbMoviesByGenres(ids: string, page: number): Promise<TmdbResponse | undefined> {
     const query_params: TmdbParams = {
       include_adult: false,
       include_video: false,
       language: 'en-US',
-      page: 1,
+      page: page,
       sort_by: 'popularity.desc',
       with_genres: ids,
       with_original_language: 'en'
@@ -258,12 +258,12 @@ export default class Spark {
      * Fetch Show from specific genre(s) id
      *
      */
-  async getTmdbShowByGenres(ids: string): Promise<TmdbResponse | undefined> {
+  async getTmdbShowByGenres(ids: string, page: number): Promise<TmdbResponse | undefined> {
     const query_params: TmdbParams = {
       include_adult: false,
       include_video: false,
       language: 'en-US',
-      page: 1,
+      page: page,
       sort_by: 'popularity.desc',
       with_genres: ids,
       with_original_language: 'en'
