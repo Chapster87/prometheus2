@@ -29,7 +29,6 @@ export default function CategoryLanding({ mediaType, catChange }: CategoryLandin
   })
 
   function categoryClick(id: number, name: string) {
-    console.log('categoryClick', id, name);
     catChange({ id: id, name: name });
   }
 

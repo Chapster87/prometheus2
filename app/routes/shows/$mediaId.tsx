@@ -107,8 +107,12 @@ function ShowPage() {
       </div>
 
       {mediaData && mediaData.seasons &&
-        <div className='container mt-12'>
-          <ShowSeasons seasons={mediaData.seasons} />
+        <div className='container mt-4 px-0'>
+          <div className='row'>
+            <div className='col-12'>
+              <ShowSeasons seasons={mediaData.seasons} />
+            </div>
+          </div>
         </div>
       }
   </div>
@@ -129,4 +133,5 @@ interface TmdbResponse {
   tagline: string;
   title: string;
   vote_average: number;
+  seasons: { season_number: number; episodes?: any[]; air_date: string; name: string }[];
 }
