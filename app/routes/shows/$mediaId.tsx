@@ -5,6 +5,12 @@ import { seo } from '~/utils/seo'
 import ShowSeasons from '~/components/media/ShowSeasons'
 import Loading from '~/components/Loading'
 
+import { MediaPlayer, MediaProvider } from '@vidstack/react';
+import { defaultLayoutIcons, DefaultVideoLayout } from '@vidstack/react/player/layouts/default';
+
+import '@vidstack/react/player/styles/default/theme.css';
+import '@vidstack/react/player/styles/default/layouts/video.css';
+
 import Spark from '~/spark';
 
 // initialize session and api engine
@@ -12,6 +18,7 @@ const session = {}; // Define session appropriately
 const spark = new Spark(session);
 
 import tmdb from '~/assets/images/tmdb-short.svg';
+
 
 export const Route = createFileRoute('/shows/$mediaId')({
   head: ({params}) => ({
@@ -27,8 +34,6 @@ export const Route = createFileRoute('/shows/$mediaId')({
   }),
   component: ShowPage,
 })
-
-// getTmdbShowSeasonDetails(id: number, season: number)
 
 function ShowPage() {
   const { mediaId } = Route.useParams()
@@ -50,7 +55,7 @@ function ShowPage() {
     return <p>No data available</p>
   }
 
-  const { backdrop_path, certification_rating, first_air_date, genres, homepage, name, networks, overview, poster_path, status, tagline, vote_average } = mediaData as TmdbResponse;
+  const { backdrop_path, certification_rating, first_air_date, genres, homepage, name, networks, overview, poster_path, status, tagline, trailers, vote_average } = mediaData as TmdbResponse;
 
   return (
     <div className='media-detail'>
@@ -103,6 +108,17 @@ function ShowPage() {
                 </div>
               </div>
             }
+          </div>
+        </div>
+      </div>
+
+      <div className='container mt-4 px-0'>
+        <div className='row'>
+          <div className='col-12'>
+          <MediaPlayer title={trailers[0].name} src={`youtube/${trailers[0].key}`}>
+            <MediaProvider />
+            <DefaultVideoLayout thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt" icons={defaultLayoutIcons} />
+          </MediaPlayer>
           </div>
         </div>
       </div>

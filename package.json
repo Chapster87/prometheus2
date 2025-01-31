@@ -15,6 +15,7 @@
     "@tanstack/react-router-with-query": "^1.97.3",
     "@tanstack/router-devtools": "^1.97.3",
     "@tanstack/start": "^1.97.3",
+    "@vidstack/react": "^1.12.12",
     "lucide-react": "^0.473.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

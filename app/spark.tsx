@@ -193,7 +193,7 @@ export default class Spark {
   }
 
   /**
-     * Fetch TV Show Details from TMDB
+     * Fetch TV Show Season Details from TMDB
      *
      */
   async getTmdbShowSeasonDetails(id: number, season: number){
@@ -205,6 +205,20 @@ export default class Spark {
     };
 
     let showDetails = await this.getTmdb('tv', id.toString(), path_params, query_params);
+
+    return showDetails;
+  }
+
+  /**
+     * Fetch TV Show Trailer from TMDB
+     *
+     */
+  async getTmdbShowTrailers(id: number){
+    const query_params: TmdbParams = {
+      language: 'en-US'
+    };
+
+    let showDetails = await this.getTmdb('tv', `${id.toString()}/videos`, null, query_params);
 
     return showDetails;
   }
@@ -225,6 +239,19 @@ export default class Spark {
 
       // Add Certification Rating
       showDetails = await this.getTmdbCertificationRating(showDetails as TmdbResponse & { media_type: string });
+
+      // Add trailer
+      const videos = await this.getTmdbShowTrailers(id);
+      if (videos && videos.results && videos.results.length) {
+        showDetails.trailers = [];
+        videos.results.map((vid) => {
+          if (vid.type === 'Trailer' && vid.site === 'YouTube') {
+            if (showDetails && showDetails.trailers) {
+              showDetails.trailers.push(vid);
+            }
+          }
+        })
+      }
 
       // Add episode data to seasons
       if (showDetails.seasons && showDetails.seasons.length) {
@@ -413,4 +440,5 @@ type TmdbResponse = {
   media_type?: string;
   seasons?: { season_number: number, episodes?: any[] }[];
   episodes?: any[];
+  trailers?: any[];
 };
