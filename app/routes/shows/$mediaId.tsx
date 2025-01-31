@@ -3,6 +3,7 @@ import detailCss from '~/styles/media-detail.scss?url'
 import { useQuery } from '@tanstack/react-query'
 import { seo } from '~/utils/seo'
 import ShowSeasons from '~/components/media/ShowSeasons'
+import Loading from '~/components/Loading'
 
 import Spark from '~/spark';
 
@@ -37,7 +38,7 @@ function ShowPage() {
   })
 
   if (mediaDataStatus === 'pending') { 
-    return <p>Loading...</p>
+    return <Loading />
   }
   if (mediaDataStatus === 'error') {
     return <p>Error :(</p>

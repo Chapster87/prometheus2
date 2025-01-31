@@ -5,6 +5,7 @@ import { seo } from '~/utils/seo'
 
 import MediaHero from '~/components/media/MediaHero';
 import MediaRowTabs from '~/components/media/MediaRowTabs';
+import Loading from '~/components/Loading';
 
 import Spark from '../spark';
 
@@ -39,7 +40,9 @@ function Home() {
   })
 
   if (trendingMoviesStatus === 'pending' || trendingShowStatus === 'pending') { 
-    return <p>Loading...</p>
+    return (
+      <Loading />
+    )
   }
   if (trendingMoviesStatus === 'error' && trendingShowStatus === 'error') {
     return <p>Error :(</p>

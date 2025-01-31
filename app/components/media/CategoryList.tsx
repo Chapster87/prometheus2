@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query'
 
+import Loading from '~/components/Loading';
+
 import Spark from '~/spark';
 
 // initialize session and api engine
@@ -33,7 +35,7 @@ export default function CategoryLanding({ mediaType, catChange }: CategoryLandin
   }
 
   if (mediaCategoriesStatus === 'pending') { 
-    return <p>Loading...</p>
+    return <Loading />
   }
   if (mediaCategoriesStatus === 'error') {
     return <p>Error :(</p>

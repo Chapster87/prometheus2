@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query'
 import MediaCard from "./MediaCard";
 import { DynamicIcon } from 'lucide-react/dynamic';
+import Loading from '~/components/Loading';
 
 import Spark from '~/spark';
 
@@ -18,7 +19,7 @@ export default function MediaList({ mediaType, catId, catName }: MediaListProps)
   })
 
   if (mediaDataStatus === 'pending') { 
-    return <p>Loading...</p>
+    return <Loading />
   }
   if (mediaDataStatus === 'error') {
     return <p>Error :(</p>

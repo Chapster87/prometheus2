@@ -2,6 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import detailCss from '~/styles/media-detail.scss?url'
 import { useQuery } from '@tanstack/react-query'
 import { seo } from '~/utils/seo'
+import Loading from '~/components/Loading'
 
 import Spark from '~/spark';
 
@@ -35,7 +36,7 @@ function MoviePage() {
   })
 
   if (mediaDataStatus === 'pending') { 
-    return <p>Loading...</p>
+    return <Loading />
   }
   if (mediaDataStatus === 'error') {
     return <p>Error :(</p>
