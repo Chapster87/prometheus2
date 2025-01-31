@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router'
+import logo from '~/assets/images/prometheus.svg';
 
 export function Header() {
   return (
@@ -81,7 +82,7 @@ export function Header() {
             to="/"
             className='btn btn-ghost text-xl'
             activeOptions={{ exact: true }}
-          >Prometheus 2.0</Link>
+          ><img src={logo} className="max-w-9 mr-2" alt="Prometheus" /> Prometheus 2.0</Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
