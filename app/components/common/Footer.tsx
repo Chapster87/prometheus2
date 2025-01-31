@@ -3,7 +3,7 @@ import tmdb from '~/assets/images/tmdb-long.svg';
 export function Footer() {
   return (
     <>
-      <footer className="footer bg-base-200 text-base-content p-10">
+      <footer className="footer bg-base-200 text-base-content p-10 mt-10">
         <aside>
           <svg
             width="50"

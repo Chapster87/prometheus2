@@ -3,7 +3,7 @@ import logo from '~/assets/images/prometheus.svg';
 
 export function Header() {
   return (
-    <div className='header sticky top-0 left-0 w-full z-[1]'>
+    <div className='header sticky top-0 left-0 w-full z-[100]'>
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">

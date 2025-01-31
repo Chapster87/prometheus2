@@ -46,7 +46,7 @@ export default function MediaList({ mediaType, catId, catName }: MediaListProps)
           })
         }
       </div>
-      <div className='sticky bottom-0 py-3 w-full flex justify-center'>
+      <div className='sticky bottom-0 mt-4 py-3 w-full flex justify-center'>
         <MediaListPaging page={page} maxPage={maxPage} changePage={handlePageUpdate} />
       </div>
     </>
