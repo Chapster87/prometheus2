@@ -33,3 +33,7 @@
   //   width: calc((100vw - #{rem(192)}) / 8);
   // }
 }
+
+.swiper-slide .media-card {
+  @apply h-full;
+}

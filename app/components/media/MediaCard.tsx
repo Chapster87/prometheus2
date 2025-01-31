@@ -32,7 +32,7 @@ export default function MediaCard({ mediaData }: { mediaData: MediaData }) {
               params={{
                 mediaId: id,
               }}
-              className="link link-primary read-more"
+              className="link link-primary read-more mt-auto"
             >
               Read More
             </Link>

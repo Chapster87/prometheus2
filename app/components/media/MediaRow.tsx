@@ -2,10 +2,10 @@ import MediaCard from "./MediaCard";
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+// import 'swiper/css';
+// import 'swiper/css/navigation';
+// import 'swiper/css/pagination';
+// import 'swiper/css/scrollbar';
 
 export default function MediaRow({ mediaData }: MediaRowProps) {
   console.log(mediaData);
@@ -43,7 +43,7 @@ const swiperBreakpoints = {
     slidesPerView: 5
   },
   1280: {
-    slidesPerView: 8
+    slidesPerView: 7
   },
   1536: {
     slidesPerView: 8

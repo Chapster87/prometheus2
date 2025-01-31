@@ -1,0 +1,18 @@
+@use "../utilities/utils" as *;
+@use "../utilities/breakpoints" as *;
+
+@import 'swiper/css';
+@import 'swiper/css/a11y';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+@import 'swiper/css/scrollbar';
+
+.swiper {
+  --swiper-theme-color: oklch(var(--p));
+  --swiper-pagination-color: oklch(var(--p));
+  --swiper-pagination-bullet-inactive-color: oklch(var(--bc));
+  --swiper-pagination-bottom: #{rem(20px)};
+  --swiper-scrollbar-drag-bg-color: oklch(var(--pc));
+  --swiper-scrollbar-bg-color: oklch(var(--bc)/20%);
+  padding-bottom: rem(58px);
+}

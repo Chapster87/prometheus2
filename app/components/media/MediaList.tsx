@@ -58,7 +58,7 @@ export function MediaListPaging({ page, maxPage, changePage }: { page: number, m
   }
 
   return (
-    <div className="pagination join my-3">
+    <div className="pagination join py-3 px-5 bg-neutral-content/30 rounded">
       <button className="page-first join-item btn"
         aria-label='Go to First Page'
         onClick={() => pageClick(1)}
