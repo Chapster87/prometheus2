@@ -27,4 +27,25 @@
       }
     }
   }
+
+  .rating-and-matrix {
+    @apply rounded relative !inline-flex flex-col;
+    z-index: 99;
+
+    .rating-matrix-outer {
+      @apply hidden -ml-4;
+    }
+
+    .episode-rating-matrix {
+      @apply bg-base-100 p-4;
+    }
+
+    &.open {
+      @apply bg-base-100 pl-4 -ml-4 pt-4 -mt-4 pr-4 shadow-xl;
+
+      .rating-matrix-outer {
+        @apply block;
+      }
+    }
+  }
 }

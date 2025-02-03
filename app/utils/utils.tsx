@@ -11,6 +11,20 @@ interface TimeConversionResult {
   finalTime: string;
 }
 
+
+export const percentageToHsl: PercentageToHsl = (percentage) => {
+  const green = 120;
+  const red = 0;
+  const hue0 = red;
+  const hue1 = green;
+  const hue = (percentage * (hue1 - hue0)) + hue0;
+  return 'hsl(' + hue + ', 100%, 50%)';
+}
+
+interface PercentageToHsl {
+  (percentage: number): string;
+}
+
 export function minutesToHrs(totalMinutes: number): string {
   const hours: number = Math.floor(totalMinutes / 60);          
   const minutes: number = totalMinutes % 60;

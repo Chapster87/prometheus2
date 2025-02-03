@@ -1,8 +1,10 @@
+import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import detailCss from '~/styles/media-detail.scss?url'
 import { useQuery } from '@tanstack/react-query'
 import { seo } from '~/utils/seo'
 import ShowSeasons from '~/components/media/ShowSeasons'
+import EpisodeRatingMatrix from '~/components/media/EpisodeRatingMatrix'
 import Loading from '~/components/Loading'
 
 import { MediaPlayer, MediaProvider } from '@vidstack/react';
@@ -18,7 +20,6 @@ const session = {}; // Define session appropriately
 const spark = new Spark(session);
 
 import tmdb from '~/assets/images/tmdb-short.svg';
-
 
 export const Route = createFileRoute('/shows/$mediaId')({
   head: ({params}) => ({
@@ -41,6 +42,8 @@ function ShowPage() {
     queryKey: ['showData'],
     queryFn: () => spark.getTmdbShow(Number(mediaId))
   })
+
+  const [ermOpen, setErmOpen] = useState(false);
 
   if (mediaDataStatus === 'pending') { 
     return <Loading />
@@ -83,45 +86,62 @@ function ShowPage() {
               {certification_rating && <span className="details-item"><span className="badge badge-rating">{certification_rating}</span></span>}
               {status && <span className="details-item"><span className="badge badge-success badge-md">Status: {status}</span></span>}
             </div>
-            {(vote_average && vote_average > 0) && 
-              <div className="community-rating !inline-flex not-prose w-auto mb-4">
-                <img src={tmdb} alt="TMDB Rating" />
-                <p className="rating-average">{ (Math.round(vote_average * 10) / 10).toFixed(1)}</p>
+            {(vote_average && vote_average > 0) &&
+              <div className={`rating-and-matrix${ermOpen ? ' open' : ''}`}>
+                <div className="flex items-center gap-3">
+                  <div className="community-rating !inline-flex not-prose w-auto">
+                    <img src={tmdb} alt="TMDB Rating" />
+                    <p className="rating-average">{ (Math.round(vote_average * 10) / 10).toFixed(1)}</p>
+                  </div>
+                  {!ermOpen ?
+                    <button className="btn btn-sm btn-outline btn-primary" onClick={() => setErmOpen(true)}>View Episode Rating Matrix</button>
+                    :
+                    <button className="btn btn-sm btn-outline btn-primary" onClick={() => setErmOpen(false)}>Close Episode Rating Matrix</button>
+                  }
+                </div>
+              
+                <div className="rating-matrix-outer relative">
+                  <div className='absolute'>
+                    <EpisodeRatingMatrix seasons={mediaData.seasons} />
+                  </div>
+                </div>
               </div>
             }
-            <div className='overview'>{overview}</div>
-            <a href={homepage} target='_blank' rel='noreferrer' className='btn btn-outline btn-secondary btn-sm mt-5'>Visit Homepage</a>
+            <div className='overview mt-4'>{overview}</div>
             {networks && networks.length > 0 &&
               <div className='networks mt-5'>
                 <p className='m-0 pb-2'>Watch on:</p>
                 <div className='flex items-center gap-3'>
                   {networks.map((network, index) => {
                     const networkLogo = network.logo_path.split('.png')[0];
-                    const whiteBg = network.name === 'Apple TV+'
+                    // const whiteBg = network.name === 'Apple TV+';
 
                     return (
-                      <figure className={`rounded m-0 p-3 w-24 ${whiteBg && `bg-white`}`}>
-                        <img key={index} src={`https://image.tmdb.org/t/p/original${networkLogo}.svg`} alt={network.name} />
+                      <figure key={index} className={`rounded m-0 p-3 w-24 bg-white`}>
+                        <img src={`https://image.tmdb.org/t/p/original${networkLogo}.svg`} alt={network.name} />
                       </figure>
                     )
                   })}
                 </div>
               </div>
             }
+            <a href={homepage} target='_blank' rel='noreferrer' className='btn btn-outline btn-secondary btn-sm mt-5'>Visit Homepage</a>
           </div>
         </div>
       </div>
 
-      <div className='container mt-4 px-0'>
-        <div className='row'>
-          <div className='col-12'>
-          <MediaPlayer title={trailers[0].name} src={`youtube/${trailers[0].key}`}>
-            <MediaProvider />
-            <DefaultVideoLayout thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt" icons={defaultLayoutIcons} />
-          </MediaPlayer>
+      {/* {trailers && trailers.length > 0 &&
+        <div className='container mt-4 px-0'>
+          <div className='row'>
+            <div className='col-12'>
+            <MediaPlayer title={trailers[0].name} src={`youtube/${trailers[0].key}`}>
+              <MediaProvider />
+              <DefaultVideoLayout thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt" icons={defaultLayoutIcons} />
+            </MediaPlayer>
+            </div>
           </div>
         </div>
-      </div>
+      } */}
 
       {mediaData && mediaData.seasons &&
         <div className='container mt-4 px-0'>
