@@ -7,6 +7,10 @@
 @include meta.load-css('components/footer');
 
 @layer base {
+  :root, [data-theme] {
+    @apply bg-base-300;
+  }
+
   body {
     @apply relative;
   }

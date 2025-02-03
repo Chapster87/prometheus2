@@ -75,7 +75,7 @@ function Home() {
         <MediaHero heroMedia={randomMedia} />
       }
       {trendingGroups && 
-        <div className='container-fluid -mt-20'>
+        <div className='container-fluid mt-4 md:mt-10 xl:-mt-20'>
           <div className='row'>
             <div className='col-12'>
               <MediaRowTabs tabGroups={trendingGroups} />

@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <>
       <footer className="footer bg-base-200 text-base-content p-10 mt-10">
-        <aside>
+        {/* <aside>
           <svg
             width="50"
             height="50"
@@ -41,7 +41,7 @@ export function Footer() {
           <a className="link link-hover">Terms of use</a>
           <a className="link link-hover">Privacy policy</a>
           <a className="link link-hover">Cookie policy</a>
-        </nav>
+        </nav> */}
       </footer>
       <div className="fixed bottom-0 right-0 w-auto flex items-center justify-end bg-base-300/80 h-10 px-3">
         <p className='mr-1'>Data sourced from</p>

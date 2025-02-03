@@ -25,7 +25,7 @@ export default function MediaList({ mediaType, catId, catName }: MediaListProps)
     return <p>Error :(</p>
   }
 
-  console.log('mediaData', mediaData)
+  // console.log('mediaData', mediaData)
 
   // max pages is 500 per TMDB forum, no matter what data says
   const maxPage = mediaData?.total_pages && mediaData.total_pages > 500 ? 500 : mediaData?.total_pages ?? 0;

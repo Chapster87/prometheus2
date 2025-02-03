@@ -15,7 +15,7 @@ export default function CategoryLanding({ mediaType }: CategoryLandingProps) {
   return (
     <div className='cat-landing container-fluid'>
       <div className='row'>
-        <div className='category-pane col-2'>
+        <div className='category-refinements col-2 bg-base-100 shadow-xl'>
           <CategoryList mediaType={mediaType} catChange={updateActiveCategory} />
         </div>
         <div className='category-main col-10'>

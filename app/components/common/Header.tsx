@@ -40,7 +40,7 @@ export function Header() {
                   }}
                 >Shows</Link>
               </li>
-              <li>
+              {/* <li>
                 <a>Test Pages</a>
                 <ul className="p-2">
                   <li>
@@ -75,7 +75,7 @@ export function Header() {
                     >Deferred</Link>
                   </li>
                 </ul>
-              </li>
+              </li> */}
             </ul>
           </div>
           <Link
@@ -102,7 +102,7 @@ export function Header() {
                 }}
               >Shows</Link>
             </li>
-            <li>
+            {/* <li>
               <details>
                 <summary>Test Pages</summary>
                 <ul className="p-2">
@@ -139,12 +139,11 @@ export function Header() {
                   </li>
                 </ul>
               </details>
-            </li>
-            <li><a>Item 3</a></li>
+            </li> */}
           </ul>
         </div>
         <div className="navbar-end">
-          <div className="dropdown dropdown-end">
+          {/* <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
                 <img
@@ -164,8 +163,8 @@ export function Header() {
               <li><a>Settings</a></li>
               <li><a>Logout</a></li>
             </ul>
-          </div>
-        </div>
+          </div> */}
+        </div> 
       </div>
     </div>
   )

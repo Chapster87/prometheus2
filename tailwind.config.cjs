@@ -40,7 +40,6 @@ module.exports = {
   ],
   daisyui: {
     themes: [
-      "light",
       {
         business: {
           ...require("daisyui/src/theming/themes")["business"],

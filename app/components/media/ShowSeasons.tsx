@@ -5,40 +5,44 @@ import { minutesToHrs, isFutureDate } from '../../utils/utils';
 export default function ShowSeasons({ seasons }: ShowSeasonsProps) {
   const [activeSeason, setActiveSeason] = useState(1);
 
-  console.log(seasons);
-
   return (
     (seasons &&
       <div role="tablist" className="tabs">
         <div className="tab-row flex">
         {seasons.map((seasonData: Season, index: number) => {
-        if (seasonData.air_date && isFutureDate(new Date(seasonData.air_date))) {
-          return null;
-        }
-        const { air_date, name, season_number } = seasonData;
-        return (
-          <button
-            key={index}
-            className={`tab ${activeSeason === season_number ? 'tab-active' : ''}`}
-            role="tab"
-            aria-label={name}
-            onClick={() => setActiveSeason(season_number)}
-          >
-          {name}
-          </button>
-        )
+          if (seasonData.air_date && isFutureDate(new Date(seasonData.air_date))) {
+            return null;
+          }
+          const { name, season_number } = seasonData;
+          return (
+            <button
+              key={index}
+              className={`tab ${activeSeason === season_number ? 'tab-active' : ''}`}
+              role="tab"
+              aria-label={name}
+              onClick={() => setActiveSeason(season_number)}
+            >
+            {name}
+            </button>
+          )
         })}
         </div>
-        {seasons.map((seasonData: Season, index: number) => {
+        {seasons.map((seasonData: Season, seasonIndex: number) => {
+          if (seasonData.air_date && isFutureDate(new Date(seasonData.air_date))) {
+            return null;
+          }
           const { episodes } = seasonData;
           return (
-            <div key={index} role="tabpanel" className={`tab-content ${activeSeason === index ? 'tab-content-active' : ''}`}>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div key={seasonIndex} role="tabpanel" className={`tab-content ${activeSeason === seasonIndex ? 'tab-content-active' : ''}`}>
+              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {episodes && episodes.length &&
-                  episodes.map((episode: Episode, index: number) => {
-                    const { name, episode_number, overview, vote_average, runtime, still_path } = episode;
+                  episodes.map((episode: Episode, episodeIndex: number) => {
+                    const { air_date, name, episode_number, overview, vote_average, runtime, still_path } = episode;
+                    if (air_date && isFutureDate(new Date(air_date))) {
+                      return null;
+                    }
                     return (
-                      <div key={index} className="episode-card card card-compact bg-base-100 shadow-xl w-full">
+                      <div key={episodeIndex} className="episode-card card card-compact bg-base-100 shadow-xl w-full">
                         <figure>
                           <img
                             src={`https://image.tmdb.org/t/p/original${still_path}`}

@@ -6,6 +6,8 @@ This site is built with TanStack Router!
 
 It's deployed automagically with Netlify!
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/b14d79b3-7bf4-4752-bf3c-369fafbf9a2e/deploy-status)](https://app.netlify.com/sites/gentle-starship-78b1b9/deploys)
+
 - [Netlify](https://netlify.com/)
 
 ## Development

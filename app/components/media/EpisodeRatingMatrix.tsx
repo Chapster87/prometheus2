@@ -2,7 +2,7 @@ import { isFutureDate, percentageToHsl } from '../../utils/utils';
 
 export default function EpisodeRatingMatrix({ seasons }) {
 
-  console.log('seasons', seasons);
+  // console.log('seasons', seasons);
 
   return (
     <div className="episode-rating-matrix not-prose">

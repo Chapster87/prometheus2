@@ -1,17 +1,35 @@
+@use "../utilities/utils" as *;
+@use "../utilities/breakpoints" as *;
+
 .media-hero {
-  aspect-ratio: 21/9;
-  @apply relative;
+  aspect-ratio: 1/1;
+  @apply relative block;
+
+  @include media-breakpoint-up(md) {
+    aspect-ratio: 21/9;
+    @apply grid;
+  }
 
   .hero-image {
-    aspect-ratio: 21/9;
-    @apply bg-cover bg-center absolute top-0 left-0 w-full;
+    aspect-ratio: 1/1;
+    @apply static bg-cover bg-center top-0 left-0 w-full;
+
+    @include media-breakpoint-up(md) {
+      aspect-ratio: 21/9;
+      @apply absolute;
+    }
   } 
 
   .hero-overlay {
+    display: none;
     @apply bg-transparent;
   }
 
   .hero-content {
-    @apply text-primary-content bg-base-300/70 absolute left-0 m-4 rounded;
+    @apply static text-primary-content bg-base-300/70 left-0 rounded -mt-28 mx-4;
+
+    @include media-breakpoint-up(md) {
+      @apply absolute m-4;
+    }
   }
 }

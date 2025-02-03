@@ -9,7 +9,7 @@ import Spark from '~/spark';
 const session = {}; // Define session appropriately
 const spark = new Spark(session);
 
-export default function CategoryLanding({ mediaType, catChange }: CategoryLandingProps) {
+export default function CategoryList({ mediaType, catChange }: CategoryListProps) {
   const [isShow, setIsShow] = useState(mediaType && mediaType === 'Shows');
   const { data: mediaCategories, status: mediaCategoriesStatus } = useQuery({
     queryKey: isShow ? ['showCategories'] : ['movieCategories'],
@@ -58,7 +58,7 @@ export default function CategoryLanding({ mediaType, catChange }: CategoryLandin
   );
 }
 
-interface CategoryLandingProps {
+interface CategoryListProps {
   mediaType: string;
   catChange: (category: { id: number; name: string }) => void;
 }

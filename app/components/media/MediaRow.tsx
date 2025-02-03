@@ -3,7 +3,7 @@ import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 export default function MediaRow({ mediaData }: MediaRowProps) {
-  console.log(mediaData);
+  // console.log(mediaData);
   return (
     <Swiper
       modules={[Navigation, Pagination, Scrollbar, A11y]}
@@ -13,8 +13,6 @@ export default function MediaRow({ mediaData }: MediaRowProps) {
       pagination={{ clickable: true }}
       scrollbar={{ draggable: true }}
       breakpoints={swiperBreakpoints}
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log('slide change')}
     >
       {mediaData.map((media: MediaType, index: number) => {
         return (

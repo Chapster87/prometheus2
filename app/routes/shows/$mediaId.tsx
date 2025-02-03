@@ -52,7 +52,7 @@ function ShowPage() {
     return <p>Error :(</p>
   }
 
-  console.log('mediaData', mediaData);
+  // console.log('mediaData', mediaData);
 
   if (!mediaData) {
     return <p>No data available</p>
